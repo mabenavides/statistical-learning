@@ -1,0 +1,18 @@
+---
+title: "President Donald Trump"
+author: "Your Name"
+date: "`r lubridate::today()`"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+## Session info
+
+```{r}
+devtools::session_info()
+```

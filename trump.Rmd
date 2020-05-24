@@ -1,14 +1,41 @@
 ---
 title: "President Donald Trump"
-author: "Your Name"
+author: "Maria Benavides"
 date: "`r lubridate::today()`"
 output: github_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(here)
+library(broom)
+library(kableExtra)
+
+theme_set(new = theme_minimal())
 ```
 
+
+```{r import data, message = FALSE}
+# Import data 
+trump_survey <- read_csv(here("data/trump.csv"))
+```
+
+```{r linear regression, message = FALSE}
+# Run a bivariate linear regression 
+video_incidence <- lm(trump ~ video, data=trump_survey)
+regression_tbl <- tidy(video_incidence)
+kable(regression_tbl)
+
+# Plot a bivariate linear regression 
+
+ggplot(trump_survey, aes(x=video, y=trump)) + 
+  geom_point() +
+  geom_smooth(method=lm) +
+  labs(title="Correlation between video and attitudes torwars Trump", 
+       x="Video importance", 
+       y="Attitude towards Donald Trump")
+
+```
 
 
 ## Session info

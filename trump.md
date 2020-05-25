@@ -1,21 +1,36 @@
 President Donald Trump
 ================
 Maria Benavides
-2020-05-23
+2020-05-25
 
 ``` r
 # Import data 
 trump_survey <- read_csv(here("data/trump.csv"))
 ```
 
+## Part 1: linear regression model of the relationship between the importance of the video and feelings towards Donald Trump
+
 ``` r
 # Run a bivariate linear regression 
 video_incidence <- lm(trump ~ video, data=trump_survey)
-regression_tbl <- tidy(video_incidence)
-kable(regression_tbl)
+regression_tbl <- tidy(video_incidence) %>%
+  rename(
+    "Coefficient" = estimate, 
+    "Standard Error" = std.error, 
+    "T-value" = statistic, 
+    "P-value" = p.value
+    )
+kable(regression_tbl, digits = 3, caption = "Table 1: relationship between the importance of the video and feelings towards Donald Trump") 
 ```
 
 <table>
+
+<caption>
+
+Table 1: relationship between the importance of the video and feelings
+towards Donald Trump
+
+</caption>
 
 <thead>
 
@@ -29,25 +44,25 @@ term
 
 <th style="text-align:right;">
 
-estimate
+Coefficient
 
 </th>
 
 <th style="text-align:right;">
 
-std.error
+Standard Error
 
 </th>
 
 <th style="text-align:right;">
 
-statistic
+T-value
 
 </th>
 
 <th style="text-align:right;">
 
-p.value
+P-value
 
 </th>
 
@@ -67,19 +82,19 @@ p.value
 
 <td style="text-align:right;">
 
-71.20084
+71.201
 
 </td>
 
 <td style="text-align:right;">
 
-0.7792244
+0.779
 
 </td>
 
 <td style="text-align:right;">
 
-91.37399
+91.374
 
 </td>
 
@@ -101,19 +116,19 @@ video
 
 <td style="text-align:right;">
 
-\-16.09537
+\-16.095
 
 </td>
 
 <td style="text-align:right;">
 
-0.2949563
+0.295
 
 </td>
 
 <td style="text-align:right;">
 
-\-54.56867
+\-54.569
 
 </td>
 
@@ -142,6 +157,9 @@ ggplot(trump_survey, aes(x=video, y=trump)) +
 
 ![](trump_files/figure-gfm/linear%20regression-1.png)<!-- -->
 
+As both the
+    table
+
 ## Session info
 
 ``` r
@@ -158,7 +176,7 @@ devtools::session_info()
     ##  collate  en_US.UTF-8                         
     ##  ctype    en_US.UTF-8                         
     ##  tz       America/Chicago                     
-    ##  date     2020-05-23                          
+    ##  date     2020-05-25                          
     ## 
     ## ─ Packages ───────────────────────────────────────────────────────────────────
     ##  package     * version date       lib source        

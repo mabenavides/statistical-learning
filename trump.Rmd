@@ -20,23 +20,32 @@ theme_set(new = theme_minimal())
 trump_survey <- read_csv(here("data/trump.csv"))
 ```
 
+## Part 1: linear regression model of the relationship between the importance of the video and feelings towards Donald Trump
+
 ```{r linear regression, message = FALSE}
 # Run a bivariate linear regression 
 video_incidence <- lm(trump ~ video, data=trump_survey)
-regression_tbl <- tidy(video_incidence)
-kable(regression_tbl)
+regression_tbl <- tidy(video_incidence) %>%
+  rename(
+    "Coefficient" = estimate, 
+    "Standard Error" = std.error, 
+    "T-value" = statistic, 
+    "P-value" = p.value
+    )
+kable(regression_tbl, digits = 3, caption = "Table 1: relationship between the importance of the video and feelings towards Donald Trump") 
 
 # Plot a bivariate linear regression 
 
 ggplot(trump_survey, aes(x=video, y=trump)) + 
   geom_point() +
   geom_smooth(method=lm) +
-  labs(title="Correlation between video and attitudes torwars Trump", 
+  labs(title="Graph 1: correlation between video and attitudes torwars Trump", 
        x="Video importance", 
        y="Attitude towards Donald Trump")
 
 ```
 
+As both table 1 and graph 1 show, there is a negative strong correlation between the importance surveyd people attributed to the video and feelings towards Donald Trump; that is to say, the greater the video importance the colder the feelings towards Trump. 
 
 ## Session info
 

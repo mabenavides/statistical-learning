@@ -8,17 +8,20 @@ Maria Benavides
 trump_survey <- read_csv(here("data/trump.csv"))
 ```
 
-## Part 1: linear regression model of the relationship between the importance of the video and feelings towards Donald Trump
+## Part 1: Donald Trump
+
+### Q1: linear regression model of the relationship between the importance of the video and feelings towards Donald Trump
 
 ``` r
 # Run a bivariate linear regression 
 video_incidence <- lm(trump ~ video, data=trump_survey)
 regression_tbl <- tidy(video_incidence) %>%
   rename(
-    "Coefficient" = estimate, 
-    "Standard Error" = std.error, 
-    "T-value" = statistic, 
-    "P-value" = p.value
+    "Predictor" = term,
+    "B" = estimate, 
+    "SE" = std.error, 
+    "t" = statistic, 
+    "p" = p.value
     )
 kable(regression_tbl, digits = 3, caption = "Table 1: relationship between the importance of the video and feelings towards Donald Trump") 
 ```
@@ -38,31 +41,31 @@ towards Donald Trump
 
 <th style="text-align:left;">
 
-term
+Predictor
 
 </th>
 
 <th style="text-align:right;">
 
-Coefficient
+B
 
 </th>
 
 <th style="text-align:right;">
 
-Standard Error
+SE
 
 </th>
 
 <th style="text-align:right;">
 
-T-value
+t
 
 </th>
 
 <th style="text-align:right;">
 
-P-value
+p
 
 </th>
 
@@ -150,15 +153,336 @@ video
 ggplot(trump_survey, aes(x=video, y=trump)) + 
   geom_point() +
   geom_smooth(method=lm) +
-  labs(title="Correlation between video and attitudes torwars Trump", 
+  labs(title="Graph 1: correlation between video and attitudes torwars Trump", 
        x="Video importance", 
        y="Attitude towards Donald Trump")
 ```
 
 ![](trump_files/figure-gfm/linear%20regression-1.png)<!-- -->
 
-As both the
-    table
+As both table 1 and graph 1 show, there is a negative strong correlation
+between the importance surveyd people attributed to the video and
+feelings towards Donald Trump; that is to say, the greater the video
+importance the colder the feelings towards
+Trump.
+
+### Q2: linear regression model of the relationship between the importance of the video and feelings towards Donald Trump, given the avaiblable variables
+
+``` r
+# Run a linear regression considering all regressions and interacting age and party identification
+video_incidence_all <- lm(trump ~ video + female + pid + age + educ + pid * age, data=trump_survey)
+regression_tbl_all <- tidy(video_incidence_all) %>%
+  rename(
+    "Coefficient" = estimate, 
+    "Standard Error" = std.error, 
+    "T-value" = statistic, 
+    "P-value" = p.value
+    )
+kable(regression_tbl_all, digits = 3, caption = "Table 2: variables influencing feelings towards Donald Trump") 
+```
+
+<table>
+
+<caption>
+
+Table 2: variables influencing feelings towards Donald Trump
+
+</caption>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+term
+
+</th>
+
+<th style="text-align:right;">
+
+Coefficient
+
+</th>
+
+<th style="text-align:right;">
+
+Standard Error
+
+</th>
+
+<th style="text-align:right;">
+
+T-value
+
+</th>
+
+<th style="text-align:right;">
+
+P-value
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+50.557
+
+</td>
+
+<td style="text-align:right;">
+
+2.794
+
+</td>
+
+<td style="text-align:right;">
+
+18.094
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+video
+
+</td>
+
+<td style="text-align:right;">
+
+\-10.229
+
+</td>
+
+<td style="text-align:right;">
+
+0.316
+
+</td>
+
+<td style="text-align:right;">
+
+\-32.355
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+female
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.622
+
+</td>
+
+<td style="text-align:right;">
+
+0.778
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.800
+
+</td>
+
+<td style="text-align:right;">
+
+0.424
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+pid
+
+</td>
+
+<td style="text-align:right;">
+
+5.213
+
+</td>
+
+<td style="text-align:right;">
+
+0.570
+
+</td>
+
+<td style="text-align:right;">
+
+9.148
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+age
+
+</td>
+
+<td style="text-align:right;">
+
+0.054
+
+</td>
+
+<td style="text-align:right;">
+
+0.036
+
+</td>
+
+<td style="text-align:right;">
+
+1.476
+
+</td>
+
+<td style="text-align:right;">
+
+0.140
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+educ
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.284
+
+</td>
+
+<td style="text-align:right;">
+
+0.171
+
+</td>
+
+<td style="text-align:right;">
+
+\-7.516
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+pid:age
+
+</td>
+
+<td style="text-align:right;">
+
+0.028
+
+</td>
+
+<td style="text-align:right;">
+
+0.010
+
+</td>
+
+<td style="text-align:right;">
+
+2.793
+
+</td>
+
+<td style="text-align:right;">
+
+0.005
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+``` r
+# Plot a bivariate linear regression 
+
+ggplot(trump_survey, aes(x=video, y=trump)) + 
+  geom_point() +
+  geom_smooth(method=lm) +
+  labs(title="Graph 1: correlation between video and attitudes torwars Trump", 
+       x="Video importance", 
+       y="Attitude towards Donald Trump")
+```
+
+![](trump_files/figure-gfm/linear%20regression%20and%20variables-1.png)<!-- -->
 
 ## Session info
 

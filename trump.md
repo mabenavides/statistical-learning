@@ -22,16 +22,18 @@ regression_tbl <- tidy(video_incidence) %>%
     "SE" = std.error, 
     "t" = statistic, 
     "p" = p.value
-    )
-kable(regression_tbl, digits = 3, caption = "Table 1: relationship between the importance of the video and feelings towards Donald Trump") 
+    ) 
+kable(regression_tbl, 
+      digits = 3, 
+      caption = "Table 1: relationship between importance of video and feelings towards Donald Trump")
 ```
 
 <table>
 
 <caption>
 
-Table 1: relationship between the importance of the video and feelings
-towards Donald Trump
+Table 1: relationship between importance of video and feelings towards
+Donald Trump
 
 </caption>
 
@@ -149,7 +151,6 @@ video
 
 ``` r
 # Plot a bivariate linear regression 
-
 ggplot(trump_survey, aes(x=video, y=trump)) + 
   geom_point() +
   geom_smooth(method=lm) +
@@ -170,13 +171,14 @@ Trump.
 
 ``` r
 # Run a linear regression considering all regressions and interacting age and party identification
-video_incidence_all <- lm(trump ~ video + female + pid + age + educ + pid * age, data=trump_survey)
+video_incidence_all <- lm(trump ~ video + female + pid + age + educ + female * video, data=trump_survey)
 regression_tbl_all <- tidy(video_incidence_all) %>%
   rename(
-    "Coefficient" = estimate, 
-    "Standard Error" = std.error, 
-    "T-value" = statistic, 
-    "P-value" = p.value
+    "Predictor" = term,
+    "B" = estimate, 
+    "SE" = std.error, 
+    "t" = statistic, 
+    "p" = p.value
     )
 kable(regression_tbl_all, digits = 3, caption = "Table 2: variables influencing feelings towards Donald Trump") 
 ```
@@ -195,31 +197,31 @@ Table 2: variables influencing feelings towards Donald Trump
 
 <th style="text-align:left;">
 
-term
+Predictor
 
 </th>
 
 <th style="text-align:right;">
 
-Coefficient
+B
 
 </th>
 
 <th style="text-align:right;">
 
-Standard Error
+SE
 
 </th>
 
 <th style="text-align:right;">
 
-T-value
+t
 
 </th>
 
 <th style="text-align:right;">
 
-P-value
+p
 
 </th>
 
@@ -239,19 +241,19 @@ P-value
 
 <td style="text-align:right;">
 
-50.557
+45.934
 
 </td>
 
 <td style="text-align:right;">
 
-2.794
+2.431
 
 </td>
 
 <td style="text-align:right;">
 
-18.094
+18.896
 
 </td>
 
@@ -273,19 +275,19 @@ video
 
 <td style="text-align:right;">
 
-\-10.229
+\-9.994
 
 </td>
 
 <td style="text-align:right;">
 
-0.316
+0.416
 
 </td>
 
 <td style="text-align:right;">
 
-\-32.355
+\-24.001
 
 </td>
 
@@ -307,25 +309,25 @@ female
 
 <td style="text-align:right;">
 
-\-0.622
+0.306
 
 </td>
 
 <td style="text-align:right;">
 
-0.778
+1.360
 
 </td>
 
 <td style="text-align:right;">
 
-\-0.800
+0.225
 
 </td>
 
 <td style="text-align:right;">
 
-0.424
+0.822
 
 </td>
 
@@ -341,19 +343,19 @@ pid
 
 <td style="text-align:right;">
 
-5.213
+6.678
 
 </td>
 
 <td style="text-align:right;">
 
-0.570
+0.217
 
 </td>
 
 <td style="text-align:right;">
 
-9.148
+30.776
 
 </td>
 
@@ -375,53 +377,19 @@ age
 
 <td style="text-align:right;">
 
-0.054
+0.134
 
 </td>
 
 <td style="text-align:right;">
 
-0.036
+0.022
 
 </td>
 
 <td style="text-align:right;">
 
-1.476
-
-</td>
-
-<td style="text-align:right;">
-
-0.140
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-educ
-
-</td>
-
-<td style="text-align:right;">
-
-\-1.284
-
-</td>
-
-<td style="text-align:right;">
-
-0.171
-
-</td>
-
-<td style="text-align:right;">
-
-\-7.516
+6.049
 
 </td>
 
@@ -437,31 +405,65 @@ educ
 
 <td style="text-align:left;">
 
-pid:age
+educ
 
 </td>
 
 <td style="text-align:right;">
 
-0.028
+\-1.279
 
 </td>
 
 <td style="text-align:right;">
 
-0.010
+0.171
 
 </td>
 
 <td style="text-align:right;">
 
-2.793
+\-7.474
 
 </td>
 
 <td style="text-align:right;">
 
-0.005
+0.000
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+video:female
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.426
+
+</td>
+
+<td style="text-align:right;">
+
+0.519
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.822
+
+</td>
+
+<td style="text-align:right;">
+
+0.411
 
 </td>
 
@@ -472,17 +474,31 @@ pid:age
 </table>
 
 ``` r
-# Plot a bivariate linear regression 
-
-ggplot(trump_survey, aes(x=video, y=trump)) + 
-  geom_point() +
-  geom_smooth(method=lm) +
-  labs(title="Graph 1: correlation between video and attitudes torwars Trump", 
-       x="Video importance", 
-       y="Attitude towards Donald Trump")
+# Plot multivariate linear regression 
+plot_summs(video_incidence_all) +
+  labs(title="Graph 2: predictors of feelings towards Donald Trump") 
 ```
 
 ![](trump_files/figure-gfm/linear%20regression%20and%20variables-1.png)<!-- -->
+
+Considering events like the one related with the video, where Trump
+brags in vulgar terms about kissing, groping, and trying to have sex
+with women, we could have assumed, initially, that gender would
+correlate negatively with the feeling a given person has towards Trump.
+Nonetheless, opposite to this assumption, the previous model shows that
+gender is not a variable that affects how a person feels towards Trump –
+the coefficient is not significant, which means is not statistically
+different from zero. This is true, also, for the interaction between the
+level of importance attributed to the video and gender.
+
+Now, focusing on party identification, we could argue that there is a
+positive correlation in the sense that the more strongly identified with
+the Republican party, the warmer the feelings towards Trump.
+
+Finally, regarding levels of education, we could state that the higher
+the level of education, the colder the feelings towards Trump – there is
+a negative significant
+    correlation.
 
 ## Session info
 
@@ -526,6 +542,7 @@ devtools::session_info()
     ##  fs            1.4.0   2020-03-31 [2] CRAN (R 3.6.3)
     ##  generics      0.0.2   2018-11-29 [2] CRAN (R 3.6.3)
     ##  ggplot2     * 3.3.0   2020-03-05 [2] CRAN (R 3.6.3)
+    ##  ggstance      0.3.4   2020-04-02 [1] CRAN (R 3.6.3)
     ##  glue          1.4.0   2020-04-03 [1] CRAN (R 3.6.3)
     ##  gtable        0.3.0   2019-03-25 [2] CRAN (R 3.6.3)
     ##  haven         2.2.0   2019-11-08 [2] CRAN (R 3.6.3)
@@ -535,6 +552,7 @@ devtools::session_info()
     ##  htmltools     0.4.0   2019-10-04 [2] CRAN (R 3.6.3)
     ##  httr          1.4.1   2019-08-05 [2] CRAN (R 3.6.3)
     ##  jsonlite      1.6.1   2020-02-02 [2] CRAN (R 3.6.3)
+    ##  jtools      * 2.0.5   2020-04-21 [1] CRAN (R 3.6.3)
     ##  kableExtra  * 1.1.0   2019-03-16 [1] CRAN (R 3.6.3)
     ##  knitr         1.28    2020-02-06 [2] CRAN (R 3.6.3)
     ##  labeling      0.3     2014-08-23 [2] CRAN (R 3.6.3)
@@ -548,10 +566,12 @@ devtools::session_info()
     ##  modelr        0.1.6   2020-02-22 [2] CRAN (R 3.6.3)
     ##  munsell       0.5.0   2018-06-12 [2] CRAN (R 3.6.3)
     ##  nlme          3.1-144 2020-02-06 [2] CRAN (R 3.6.3)
+    ##  pander        0.6.3   2018-11-06 [1] CRAN (R 3.6.3)
     ##  pillar        1.4.3   2019-12-20 [2] CRAN (R 3.6.3)
     ##  pkgbuild      1.0.6   2019-10-09 [2] CRAN (R 3.6.3)
     ##  pkgconfig     2.0.3   2019-09-22 [2] CRAN (R 3.6.3)
     ##  pkgload       1.0.2   2018-10-29 [2] CRAN (R 3.6.3)
+    ##  plyr          1.8.6   2020-03-03 [2] CRAN (R 3.6.3)
     ##  prettyunits   1.1.1   2020-01-24 [2] CRAN (R 3.6.3)
     ##  processx      3.4.2   2020-02-09 [2] CRAN (R 3.6.3)
     ##  ps            1.3.2   2020-02-13 [2] CRAN (R 3.6.3)

@@ -10,7 +10,7 @@ library(tidyverse)
 library(here)
 library(broom)
 library(kableExtra)
-
+library(jtools)
 theme_set(new = theme_minimal())
 ```
 
@@ -24,7 +24,7 @@ trump_survey <- read_csv(here("data/trump.csv"))
 
 ### Q1: linear regression model of the relationship between the importance of the video and feelings towards Donald Trump
 
-```{r linear regression, message = FALSE}
+```{r linear regression, echo=TRUE, message=FALSE}
 # Run a bivariate linear regression 
 video_incidence <- lm(trump ~ video, data=trump_survey)
 regression_tbl <- tidy(video_incidence) %>%
@@ -34,14 +34,12 @@ regression_tbl <- tidy(video_incidence) %>%
     "SE" = std.error, 
     "t" = statistic, 
     "p" = p.value
-    ) %>%
-kable(digits = 3, 
-      caption = "Table 1: relationship between importance of video and feelings towards Donald Trump") 
-
-
+    ) 
+kable(regression_tbl, 
+      digits = 3, 
+      caption = "Table 1: relationship between importance of video and feelings towards Donald Trump")
 
 # Plot a bivariate linear regression 
-
 ggplot(trump_survey, aes(x=video, y=trump)) + 
   geom_point() +
   geom_smooth(method=lm) +
@@ -58,27 +56,28 @@ As both table 1 and graph 1 show, there is a negative strong correlation between
 ```{r linear regression and variables, message = FALSE}
 
 # Run a linear regression considering all regressions and interacting age and party identification
-video_incidence_all <- lm(trump ~ video + female + pid + age + educ + pid * age, data=trump_survey)
+video_incidence_all <- lm(trump ~ video + female + pid + age + educ + female * video, data=trump_survey)
 regression_tbl_all <- tidy(video_incidence_all) %>%
   rename(
-    "Coefficient" = estimate, 
-    "Standard Error" = std.error, 
-    "T-value" = statistic, 
-    "P-value" = p.value
+    "Predictor" = term,
+    "B" = estimate, 
+    "SE" = std.error, 
+    "t" = statistic, 
+    "p" = p.value
     )
 kable(regression_tbl_all, digits = 3, caption = "Table 2: variables influencing feelings towards Donald Trump") 
 
-# Plot a bivariate linear regression 
-
-ggplot(trump_survey, aes(x=video, y=trump)) + 
-  geom_point() +
-  geom_smooth(method=lm) +
-  labs(title="Graph 1: correlation between video and attitudes torwars Trump", 
-       x="Video importance", 
-       y="Attitude towards Donald Trump")
-
+# Plot multivariate linear regression 
+plot_summs(video_incidence_all) +
+  labs(title="Graph 2: predictors of feelings towards Donald Trump") 
 
 ```
+
+Considering events like the one related with the video, where Trump brags in vulgar terms about kissing, groping, and trying to have sex with women, we could have assumed, initially, that gender would correlate negatively with the feeling a given person has towards Trump. Nonetheless, opposite to this assumption, the previous model shows that gender is not a variable that affects how a person feels towards Trump – the coefficient is not significant, which means is not statistically different from zero. This is true, also, for the interaction between the level of importance attributed to the video and gender. 
+
+Now, focusing on party identification, we could argue that there is a positive correlation in the sense that the more strongly identified with the Republican party, the warmer the feelings towards Trump. 
+
+Finally, regarding levels of education, we could state that the higher the level of education, the colder the feelings towards Trump – there is a negative significant correlation. 
 
 
 ## Session info

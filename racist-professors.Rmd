@@ -1,12 +1,61 @@
 ---
 title: "Predicting attitudes towards racist college professors"
-author: "Your Name"
+author: "Maria Benavides"
 date: "`r lubridate::today()`"
 output: github_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(here)
+library(broom)
+library(kableExtra)
+library(jtools)
+theme_set(new = theme_minimal())
+
+prof_data <- rcfss::gss_colrac
+```
+
+## Introduction 
+
+Using data from the General Social Survey (GSS) – which provides information about what Americans think and feel about issues of national spending priorities, crime and punishment, intergroup relations, and confidence in institutions – we will analyze the factors that determine whether or not an individual believes a racist person should be allowed to teach.
+
+**Table 1** shows whether age, gender, level of education and political party identification have incidence in a person’s attitude towards a racist professor teaching in a college or university. 
+
+
+```{r model 1, echo=FALSE, message=FALSE}
+model_1 <- glm(colrac ~ age + degree + partyid_3 + sex, data=prof_data, family = "binomial")
+regr_model1 <- tidy(model_1) %>%
+  rename(
+    "Predictor" = term,
+    "B" = estimate, 
+    "SE" = std.error, 
+    "t" = statistic, 
+    "p" = p.value
+    ) 
+kable(regr_model1, 
+      digits = 3, 
+      caption = "Table 1: predictors of attitudes towards racist college professors"
+      ) 
+```
+
+According to this model: 
+
+* The older a person is, the lower the probability of accepting that a racist person should be allowed to teach. 
+* People with higher levels of education are more likely to accept that a racist person should be allowed to teach, relatively to a person with no high school diploma. 
+* Republicans and independents are more likely to accept that a racist person should be allowed to teach, relatively to a democrat. 
+* Women are less likely to accept that a racist person should be allowed to teach, relatively to men. 
+
+The following graph presents this same information. 
+
+
+```{r plot model 1, echo=FALSE}
+
+# Plot linear regression 
+plot_summs(model_1) +
+  labs(title="Graph 1: predictors of attitudes towards racist college professors") 
+
 ```
 
 

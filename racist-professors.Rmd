@@ -21,6 +21,9 @@ prof_data <- rcfss::gss_colrac
 
 Using data from the General Social Survey (GSS) – which provides information about what Americans think and feel about issues of national spending priorities, crime and punishment, intergroup relations, and confidence in institutions – we will analyze the factors that determine whether or not an individual believes a racist person should be allowed to teach.
 
+
+### First approach: considering socio-demographic variables 
+
 **Table 1** shows whether age, gender, level of education and political party identification have incidence in a person’s attitude towards a racist professor teaching in a college or university. 
 
 
@@ -36,7 +39,7 @@ regr_model1 <- tidy(model_1) %>%
     ) 
 kable(regr_model1, 
       digits = 3, 
-      caption = "Table 1: predictors of attitudes towards racist college professors"
+      caption = "Table 1: predictors of attitudes towards racist professors"
       ) 
 ```
 
@@ -47,17 +50,66 @@ According to this model:
 * Republicans and independents are more likely to accept that a racist person should be allowed to teach, relatively to a democrat. 
 * Women are less likely to accept that a racist person should be allowed to teach, relatively to men. 
 
-The following graph presents this same information. 
+When including a dummy variable indicating **whether the surveyed person is black or whether is hispanic**, most of the results remain the same; only the factor regarding  a person's identification with the Republican party loses statistical significance. In addition, we can state that African Americans and Hispanic people are less likely to accept that a racist professor teaches at a university. This is shown in **Table 2**.
 
 
-```{r plot model 1, echo=FALSE}
+```{r model 2, echo=FALSE, message=FALSE}
 
-# Plot linear regression 
-plot_summs(model_1) +
-  labs(title="Graph 1: predictors of attitudes towards racist college professors") 
+model_2 <- glm(colrac ~ age + degree + partyid_3 + sex + black + hispanic_2, data=prof_data, family = "binomial")
+regr_model2 <- tidy(model_2) %>%
+  rename(
+    "Predictor" = term,
+    "B" = estimate, 
+    "SE" = std.error, 
+    "t" = statistic, 
+    "p" = p.value
+    ) 
+kable(regr_model2, 
+      digits = 3, 
+      caption = "Table 2: predictors of attitudes towards racist professors considering race"
+      ) 
 
 ```
 
+
+### Second approach: considering scales
+
+Now, we should consider that other factors influence the attitudes of people towards racism; we can examine authoritarian, egalitarian and tolerance tendency, and understand how influential they are in the level of racism acceptence.
+
+```{r model scales, echo=FALSE, message=FALSE}
+model_3 <- glm(colrac ~ authoritarianism + egalit_scale + tolerance, data=prof_data, family = "binomial")
+regr_model_scale <- tidy(model_3) %>%
+  rename(
+    "Predictor" = term,
+    "B" = estimate, 
+    "SE" = std.error, 
+    "t" = statistic, 
+    "p" = p.value
+    ) 
+kable(regr_model_scale, 
+      digits = 3, 
+      caption = "Table 3: scales as predictors of attitudes towards racist professors"
+      ) 
+```
+
+According to **Table 3**, as we could, a prior, assume, people with higher tendency levels of tolerance, are more acceptance of racist behaviors; that is, they would be more likely to accept that that a racist person should be allowed to teach. Also, more authoritarian people present the same behavior. Mine while, those who are more egalitarian, are less likely to accept that a racist professor teaches at a university or college. 
+
+```{r plot model 1 & 2 & 3, echo=FALSE, message=FALSE}
+
+# Plot linear regression 
+plot_summs(model_1, model_2, model_3) +
+  labs(title="Predictors of attitudes towards racist professors") 
+
+```
+
+## Conclusions
+
+Based on the previous analysis, we could argue that many factors influence people’s attitudes towards racism. In general terms we could say that: 
+
+* Being part of a minority group decreases the probability of accepting racist behaviors. 
+* Political affiliations are also correlated with the level of acceptance of racism. A republican person is more likely to tolerate the fact that a racist professor teaches at a university. 
+* Identifying as women is negatively correlated with the likelihood of accepting a racist professor. 
+* People with higher levels of tolerance, are also more accepting of racist professors teaching in universities and colleges. 
 
 
 ## Session info

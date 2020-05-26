@@ -12,6 +12,8 @@ confidence in institutions – we will analyze the factors that determine
 whether or not an individual believes a racist person should be allowed
 to teach.
 
+### First approach: considering socio-demographic variables
+
 **Table 1** shows whether age, gender, level of education and political
 party identification have incidence in a person’s attitude towards a
 racist professor teaching in a college or university.
@@ -20,7 +22,7 @@ racist professor teaching in a college or university.
 
 <caption>
 
-Table 1: predictors of attitudes towards racist college professors
+Table 1: predictors of attitudes towards racist professors
 
 </caption>
 
@@ -384,14 +386,664 @@ According to this model:
   - Republicans and independents are more likely to accept that a racist
     person should be allowed to teach, relatively to a democrat.
   - Women are less likely to accept that a racist person should be
-    allowed to teach, relatively to
-    men.
+    allowed to teach, relatively to men.
 
-<!-- end list -->
+When including a dummy variable indicating **whether the surveyed person
+is black or whether is hispanic**, most of the results remain the same;
+only the factor regarding a person’s identification with the Republican
+party loses statistical significance. In addition, we can state that
+African Americans and Hispanic people are less likely to accept that a
+racist professor teaches at a university. This is shown in **Table 2**.
 
-    ## Loading required namespace: broom.mixed
+<table>
 
-![](racist-professors_files/figure-gfm/plot%20model%201-1.png)<!-- -->
+<caption>
+
+Table 2: predictors of attitudes towards racist professors considering
+race
+
+</caption>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+Predictor
+
+</th>
+
+<th style="text-align:right;">
+
+B
+
+</th>
+
+<th style="text-align:right;">
+
+SE
+
+</th>
+
+<th style="text-align:right;">
+
+t
+
+</th>
+
+<th style="text-align:right;">
+
+p
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+0.194
+
+</td>
+
+<td style="text-align:right;">
+
+0.225
+
+</td>
+
+<td style="text-align:right;">
+
+0.861
+
+</td>
+
+<td style="text-align:right;">
+
+0.389
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+age
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.005
+
+</td>
+
+<td style="text-align:right;">
+
+0.003
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.842
+
+</td>
+
+<td style="text-align:right;">
+
+0.065
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+degreeHS
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.120
+
+</td>
+
+<td style="text-align:right;">
+
+0.141
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.851
+
+</td>
+
+<td style="text-align:right;">
+
+0.395
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+degreeJunior Coll
+
+</td>
+
+<td style="text-align:right;">
+
+0.086
+
+</td>
+
+<td style="text-align:right;">
+
+0.208
+
+</td>
+
+<td style="text-align:right;">
+
+0.413
+
+</td>
+
+<td style="text-align:right;">
+
+0.680
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+degreeBachelor deg
+
+</td>
+
+<td style="text-align:right;">
+
+0.444
+
+</td>
+
+<td style="text-align:right;">
+
+0.169
+
+</td>
+
+<td style="text-align:right;">
+
+2.620
+
+</td>
+
+<td style="text-align:right;">
+
+0.009
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+degreeGraduate deg
+
+</td>
+
+<td style="text-align:right;">
+
+0.561
+
+</td>
+
+<td style="text-align:right;">
+
+0.194
+
+</td>
+
+<td style="text-align:right;">
+
+2.899
+
+</td>
+
+<td style="text-align:right;">
+
+0.004
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+partyid\_3Ind
+
+</td>
+
+<td style="text-align:right;">
+
+0.291
+
+</td>
+
+<td style="text-align:right;">
+
+0.111
+
+</td>
+
+<td style="text-align:right;">
+
+2.627
+
+</td>
+
+<td style="text-align:right;">
+
+0.009
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+partyid\_3Rep
+
+</td>
+
+<td style="text-align:right;">
+
+0.173
+
+</td>
+
+<td style="text-align:right;">
+
+0.129
+
+</td>
+
+<td style="text-align:right;">
+
+1.339
+
+</td>
+
+<td style="text-align:right;">
+
+0.180
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+sexFemale
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.227
+
+</td>
+
+<td style="text-align:right;">
+
+0.093
+
+</td>
+
+<td style="text-align:right;">
+
+\-2.451
+
+</td>
+
+<td style="text-align:right;">
+
+0.014
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+blackYes
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.532
+
+</td>
+
+<td style="text-align:right;">
+
+0.139
+
+</td>
+
+<td style="text-align:right;">
+
+\-3.821
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+hispanic\_2Yes
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.222
+
+</td>
+
+<td style="text-align:right;">
+
+0.142
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.567
+
+</td>
+
+<td style="text-align:right;">
+
+0.117
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+### Second approach: considering scales
+
+Now, we should consider that other factors influence the attitudes of
+people towards racism; we can examine authoritarian, egalitarian and
+tolerance tendency, and understand how influential they are in the level
+of racism acceptence.
+
+<table>
+
+<caption>
+
+Table 3: scales as predictors of attitudes towards racist professors
+
+</caption>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+Predictor
+
+</th>
+
+<th style="text-align:right;">
+
+B
+
+</th>
+
+<th style="text-align:right;">
+
+SE
+
+</th>
+
+<th style="text-align:right;">
+
+t
+
+</th>
+
+<th style="text-align:right;">
+
+p
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+(Intercept)
+
+</td>
+
+<td style="text-align:right;">
+
+\-5.770
+
+</td>
+
+<td style="text-align:right;">
+
+0.349
+
+</td>
+
+<td style="text-align:right;">
+
+\-16.542
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+authoritarianism
+
+</td>
+
+<td style="text-align:right;">
+
+0.143
+
+</td>
+
+<td style="text-align:right;">
+
+0.036
+
+</td>
+
+<td style="text-align:right;">
+
+3.995
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+egalit\_scale
+
+</td>
+
+<td style="text-align:right;">
+
+\-0.010
+
+</td>
+
+<td style="text-align:right;">
+
+0.006
+
+</td>
+
+<td style="text-align:right;">
+
+\-1.706
+
+</td>
+
+<td style="text-align:right;">
+
+0.088
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+tolerance
+
+</td>
+
+<td style="text-align:right;">
+
+0.517
+
+</td>
+
+<td style="text-align:right;">
+
+0.026
+
+</td>
+
+<td style="text-align:right;">
+
+19.893
+
+</td>
+
+<td style="text-align:right;">
+
+0.000
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+According to **Table 3**, as we could, a prior, assume, people with
+higher tendency levels of tolerance, are more acceptance of racist
+behaviors; that is, they would be more likely to accept that that a
+racist person should be allowed to teach. Also, more authoritarian
+people present the same behavior. Mine while, those who are more
+egalitarian, are less likely to accept that a racist professor teaches
+at a university or
+college.
+
+![](racist-professors_files/figure-gfm/plot%20model%201%20&%202%20&%203-1.png)<!-- -->
+
+## Conclusions
+
+Based on the previous analysis, we could argue that many factors
+influence people’s attitudes towards racism. In general terms we could
+say that:
+
+  - Being part of a minority group decreases the probability of
+    accepting racist behaviors.
+  - Political affiliations are also correlated with the level of
+    acceptance of racism. A republican person is more likely to tolerate
+    the fact that a racist professor teaches at a university.
+  - Identifying as women is negatively correlated with the likelihood of
+    accepting a racist professor.
+  - People with higher levels of tolerance, are also more accepting of
+    racist professors teaching in universities and
+    colleges.
 
 ## Session info
 

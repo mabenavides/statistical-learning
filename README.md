@@ -1,6 +1,8 @@
-# hw07
+# Statistical learning
 
-## Maria Benavides 
+## Author: Maria Benavides 
+
+In this repository, I used data from the 2012 American National Election Studies survey, to evaluate to what extent a video featuring President Trump influenced individual attitudes towards him. In addition, using the General Social Survey is a biannual survey of the American public, I estimated whether or not an individual believes that a person who have made racist remakrs should be allowed to teach. 
 
 ### Libraries needed
 
